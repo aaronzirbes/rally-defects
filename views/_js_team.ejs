@@ -1,0 +1,71 @@
+<script src="/js/teamdefects.js"></script>
+<script type="text/javascript">
+	var teams = <%- JSON.stringify(teams) %>;
+	var timeout;
+
+	function lookupDefects() {
+		clearTimeout(timeout);
+		timeout = setTimeout(lookupDefects, 60000 * 5);
+
+		var release = $('#release').val();
+		//$('#graphs').hide();
+		$('div.loader').show();
+		$('#title').html('Loading...');
+
+		$.ajax({
+			type: "GET",
+			url: "/teamInfo",
+			dataType: "json",
+			data: { teams: teams, release: release }
+		}).done(function(json) {
+				$('div.loader').fadeOut(200, function() {
+					$('#graphs').show();
+					$('#title').html(release);
+
+					var totalDefectsOpen = 0;
+					for (var i = 0; i < teams.length; i++) {
+						totalDefectsOpen += json[teams[i].key];
+					}
+
+					for (var i = 0; i < teams.length; i++) {
+						(function() {
+							var defectsOpen = json[teams[i].key];
+							var id = 'defectsFor' + teams[i].key;
+							var numId = 'number' + teams[i].key;
+							var percent = totalDefectsOpen > 0 ? (defectsOpen / totalDefectsOpen) : 0;
+							percent = Math.floor(percent * 100);
+							$('#' + id + ' span').animate({width: percent + '%'}, 500, function() {
+								$('#' + numId).html(defectsOpen > 0 ? defectsOpen : '');
+							});
+						})();
+						var percent = (json.storyComplete / json.storyTotal);
+						percent = Math.floor(percent * 100);
+						$('.releaseInfo .meter span').animate({width: percent + '%'});
+						$('.releaseInfo h4').html(percent + '% Complete: ' + json.storyComplete + ' of ' + json.storyTotal + ' stories.');
+						//$('#graphs h4').html(percent + '% Complete: ' + json.storyComplete + ' of ' + json.storyTotal + ' stories.');
+					}
+
+					//var percent = (json.storyComplete / json.storyTotal);
+					//percent = Math.floor(percent * 100);
+					//$('.meter span').animate({width: percent + '%'});
+					//$('#graphs h4').html(percent + '% Complete: ' + json.storyComplete + ' of ' + json.storyTotal + ' stories.');
+					defects.drawCircles(json);
+					console.log(json);
+				});
+			});
+}
+
+	$('#reload').click(function(e) {
+		e.preventDefault();
+		lookupDefects();
+	});
+	$('#release').change(function() {
+		lookupDefects();
+	})
+	$(document).ready(function() {
+		defects.init(teams);
+		lookupDefects();
+	});
+</script>
+
+

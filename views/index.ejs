@@ -1,0 +1,30 @@
+<% layout('layout') -%>
+<div id="main">
+	<div id="defects">
+		<div id="graphs">
+			<div id="redDefects" class="defect"></div>
+			<div id="yellowDefects" class="defect"></div>
+			<div id="greenDefects" class="defect"></div>
+			<br />
+			<div class="meter blue">
+				<span></span>
+			</div>
+			<h4></h4>
+		</div>
+	</div>
+	<div id="menu">
+		<% if (releases && releases.length > 0) { %>
+		<span>Choose release:</span>
+		<select name="release" id="release">
+			<% for (var i = 0; i < releases.length; i++) {
+			var release = releases[i]; %>
+			<option <%- selectedRelease == release ? 'selected="selected"' : '' %>><%= release %></option>
+			<% } %>
+		</select>
+		<% } %>
+		<a href="#" id="reload" ></a>
+	</div>
+</div>
+<% block('scripts', '<script src="/js/defect.js"></script>') %>
+
+

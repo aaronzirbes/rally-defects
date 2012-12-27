@@ -1,0 +1,62 @@
+<% layout('layout') -%>
+<div id="midFloater"></div>
+<div id="main" class="team">
+	<!--1920×1080-->
+	<div id="defects" style="text-align: center;">
+		<div id="graphs">
+			<table style="display: inline-block;">
+				<tr>
+					<td class="releaseInfo">
+						<div id="total" class="defect"></div>
+						<div class="meter blue" style="width: 400px;">
+							<span></span>
+						</div>
+						<h4>&nbsp;</h4>
+					</td>
+					<td>
+						<ul>
+							<li>
+								<h1><span id="title">Loading</span></h1>
+								<div class="loader">
+									<span></span>
+									<span></span>
+									<span></span>
+									<span></span>
+								</div>​
+							</li>
+							<% if (teams && teams.length > 0) {
+							for (var i = 0; i < teams.length; i++) {
+							var team = teams[i]; %>
+							<li>
+								<label><%= team.val %></label>
+								<div id="defectsFor<%= team.key %>" class="meter red">
+									<span></span>
+								</div>
+								<div id="number<%= team.key %>" class="number"></div>
+							</li>
+							<%  }
+							} %>
+							<li>
+								<div id="menu">
+									<% if (releases && releases.length > 0) { %>
+									<span>Choose release:</span>
+									<select name="release" id="release">
+										<% for (var i = 0; i < releases.length; i++) {
+										var release = releases[i]; %>
+										<option <%- selectedRelease == release ? 'selected="selected"' : '' %>><%= release %></option>
+										<% } %>
+									</select>
+									<% } %>
+									<a href="#" id="reload" ></a>
+								</div>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<% block('scripts', '<script type="text/javascript">var teams = ' + JSON.stringify(teams) + ';</script>') %>
+<% block('scripts', '<script src="/js/teamdefects.js"></script>') %>
+

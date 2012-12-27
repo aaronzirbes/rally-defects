@@ -1,0 +1,23 @@
+{
+    "name":"Rally Defects",
+    "author": "Adan Perez",
+    "version":"1.0.0",
+    "description":"Rally defect app",
+    "license": "MIT",
+    "dependencies":{
+        "connect":"2.5.x",
+        "express":"3.x",
+        "querystring": "0.1.x",
+        "async": "0.1.x",
+        "request": "2.11.x",
+        "ejs-locals": "0.2.x",
+    },
+    "engines": {
+        "node": ">=0.8"
+    },
+    "keywords": ["rally","defect"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/adanperez/rally-defects.git"
+    }
+}
